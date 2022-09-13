@@ -2,6 +2,8 @@
 ```sh-session
 ・NOT FULL SOURCE. SLN and Offsets removed to prevent the source gettign skidded. You can make the sln yourself or buy it of us
 ```
+
+## Edit config to enable an disable cheat settings in the imgui
 ***
 
 
