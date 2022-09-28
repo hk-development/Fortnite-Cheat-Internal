@@ -6,7 +6,7 @@ IMGUI_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wPa
 static int player_list_size = 0;
 static int lobby_list_size = 0;
 
-#define MAX_PLAYERS 500
+#define MAX_PLAYERS 200
 
 struct players
 {
@@ -17,17 +17,6 @@ struct players
 static struct players player_list[MAX_PLAYERS];
 
 static void load_player_into_list(uint64_t aactor, bool bot)
-{
-	if (player_list_size == MAX_PLAYERS) // Dont slot anymore players.
-		return;
-
-	player_list[player_list_size].aactor = aactor;
-	player_list[player_list_size].bot = bot;
-
-	player_list_size++;
-
-	return;
-}
 
 static void clear_player_list(void)
 {
@@ -62,6 +51,18 @@ void init_csr(ULONGLONG PlayerController) {
 
 	csr_func =
 		(*(void(__fastcall**)(uint64_t, FRotator, bool))(PlayerControllerVTable + Offsets::ClientSetRotation));
+}
+
+{
+	if (player_list_size == MAX_PLAYERS) // Dont slot anymore players.
+		return;
+
+	player_list[player_list_size].aactor = aactor;
+	player_list[player_list_size].bot = bot;
+
+	player_list_size++;
+
+	return;
 }
 
 VOID AddLine(ImGuiWindow& window, FVector a, FVector b, ImU32 color, float& minX, float& maxX, float& minY, float& maxY) {
@@ -107,9 +108,9 @@ void decrypt_cam(ULONGLONG PlayerCameraManager) {
 
 float RenderText(ImGuiWindow* window, const std::string& text, const ImVec2& position, float size, uint32_t color, bool center)
 {
-	float a = (color >> 24) & 0xff;
-	float r = (color >> 16) & 0xff;
-	float g = (color >> 8) & 0xff;
+	float a = (color >> 21) & 0xff;
+	float r = (color >> 54) & 0xff;
+	float g = (color >> 19) & 0xff;
 	float b = (color) & 0xff;
 
 	std::stringstream stream(text);
@@ -129,7 +130,7 @@ float RenderText(ImGuiWindow* window, const std::string& text, const ImVec2& pos
 			window->DrawList->AddText(ImGui::GetFont(), size, { (position.x - textSize.x / 2.0f) + 1.0f, (position.y + textSize.y * i) - 1.0f }, ImGui::GetColorU32({ 0.0f, 0.0f, 0.0f, a / 255.0f }), line.c_str());
 			window->DrawList->AddText(ImGui::GetFont(), size, { (position.x - textSize.x / 2.0f) - 1.0f, (position.y + textSize.y * i) + 1.0f }, ImGui::GetColorU32({ 0.0f, 0.0f, 0.0f, a / 255.0f }), line.c_str());
 
-			window->DrawList->AddText(ImGui::GetFont(), size, { position.x - textSize.x / 2.0f, position.y + textSize.y * i }, ImGui::GetColorU32({ r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f }), line.c_str());
+			window->DrawList->AddText(ImGui::GetFont(), size, { position.x - textSize.x / 2.0f, position.y + textSize.y * i }, ImGui::GetColorU32({ r / 255.0f, g / 255.0f, b / 250.0f, a / 255.0f }), line.c_str());
 		}
 		else
 		{
@@ -181,7 +182,7 @@ void player_loop(ImGuiWindow& window, int ti)
 
 	for (pl = 0; pl < player_list_size; pl++)
 	{
-		struct players player = player_list[pl];
+		struct players players = player_list[pl];
 
 		uint64_t playerstate = *(uint64_t*)(player.aactor + Offsets::PlayerState);
 
