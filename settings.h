@@ -21,9 +21,7 @@ struct SETTINGS
 	struct {
 		bool BoneESP;
 		bool BoxEsp;
-		bool PlayerLines;
-		bool PlayerLineToBots;
-		bool PlayerLineToPlayers;
+		bool PlayerLines; ##removed features for ban risk :9
 	} ESP;
 	float NotVisibleColor[4];
 	float BotColor[4];
