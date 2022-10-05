@@ -29,12 +29,8 @@
  💬 Discord ・ https://discord.gg/mHFn33Dajq
 
  ✈ Telegram ・ https://t.me/hkcheats
-
- 🌐 Website ・ www.hkcheats.xyz
  
  ***
- Screenshot getting uploaded in a few hours :(
- bugged asf
 
  
 
